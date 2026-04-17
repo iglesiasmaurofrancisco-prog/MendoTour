@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block title %}Cómo moverte por la ciudad · MendoTour{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='transporte.css') }}">
+
+<!-- Leaflet (lo incluyo acá para que no falte; si ya está en layout.html, no pasa nada) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <h1>Cómo moverte por la ciudad</h1>
+  <p>Tranvía, colectivos, taxis y apps de viaje en Mendoza.</p>
+</section>
+
+<section class="transport-section">
+
+  <!-- TRANVÍA -->
+  <div class="transport-card">
+    <img src="{{ url_for('static', filename='img/transporte/tranvia.jpeg') }}" alt="Tranvía de Mendoza">
+    <div class="transport-info">
+      <h2>Tranvía</h2>
+      <p>Conecta Maipú con Ciudad de Mendoza, pasando por barrios tradicionales y zonas comerciales.</p>
+    
+    </div>
+    <!-- MAPA INTERACTIVO -->
+  <div>
+    <h2 style="text-align:center; color:#623800;">Recorrido Interactivo del Tranvía</h2>
+    <div id="map"></div>
+    <script>
+
+// Inicializar mapa centrado en el tramo principal
+const map = L.map('map').setView([-32.90, -68.84], 12);
+
+// OpenStreetMap layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap',
+  maxZoom: 19
+}).addTo(map);
+
+// Recorrido REAL marcado por vos con Leaflet
+const recorridoTranvia = [
+  [-32.83602148469606, -68.83591674669381],
+  [-32.839757832447155, -68.83683932822852],
+  [-32.84741548541535, -68.83882420067798],
+  [-32.85232732938656, -68.83997750065838],
+  [-32.85504445540556, -68.84055152760193],
+  [-32.85978539097842, -68.84211257111022],
+  [-32.86640937923618, -68.84380770439802],
+  [-32.8700365476108, -68.8447733431242],
+  [-32.87638443358359, -68.84645778749275],
+  [-32.87937182223011, -68.8472410253139],
+  [-32.882849303561535, -68.84821729807372],
+  [-32.890388321500666, -68.85015925517891],
+  [-32.896829216361944, -68.85182754926936],
+  [-32.9044952552096, -68.85296479092287],
+  [-32.908652554471516, -68.85196701415893],
+  [-32.915983868140664, -68.8465059802934],
+  [-32.921490760963394, -68.83981120227382],
+  [-32.92692616479311, -68.83322899078406],
+  [-32.93286559137724, -68.82593323471394],
+  [-32.93826305128909, -68.81933521295174],
+  [-32.94168904445802, -68.81515636124414],
+  [-32.947392648264206, -68.80818261923102],
+  [-32.95251601561102, -68.80120866569887],
+  [-32.954910313610604, -68.7952703153453],
+  [-32.95711125960515, -68.78951434683376],
+  [-32.95967707379721, -68.78269607315147]
+];
+
+// Línea roja en el mapa
+const ruta = L.polyline(recorridoTranvia, {
+  color: "red",
+  weight: 6,
+  opacity: 0.9
+}).addTo(map);
+
+// Acercar el mapa a la línea automáticamente
+map.fitBounds(ruta.getBounds());
+
+</script>
+
+  </div>
+  </div>
+
+  <!-- COLECTIVOS -->
+  <div class="transport-card">
+    <img src="{{ url_for('static', filename='img/transporte/colectivo.jpeg') }}" alt="Colectivo urbano de Mendoza">
+    <div class="transport-info">
+      <h2>Colectivos</h2>
+      <p>Conectan la ciudad con barrios, centros comerciales y puntos turísticos. Durante el recorrido pueden apreciarse plazas arboladas, arquitectura histórica y vistas de la Cordillera.
+       <p>
+  Descargá la app 
+  <a href="https://play.google.com/store/apps/details?id=com.wara.mendotran&hl=es_AR" target="_blank" rel="noopener">
+    MendoTran para Android
+  </a>
+  o 
+  <a href="https://apps.apple.com/ar/app/mendotran-cuando-subo/id1554868168" target="_blank" rel="noopener">
+    MendoTran para iPhone
+  </a>
+  para ver rutas, horarios y paradas en tiempo real.
+
+      </p>
+    </div>
+  </div>
+
+  <!-- TAXIS / APPS -->
+  <div class="transport-card">
+    <img src="{{ url_for('static', filename='img/transporte/taxi.jpg') }}" alt="Taxis y apps de viaje en Mendoza">
+    <div class="transport-info">
+      <h2>Taxis y Apps</h2>
+      <p>Podés pedir taxis desde paradas centrales o usar apps desde el celular.</p>
+      <p style="margin-top: .5rem; font-weight: bold;">Apps disponibles:</p>
+      <ul>
+        <li>Uber</li>
+        <li>Cabify</li>
+        <li>BEAT (en algunas zonas)</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}
